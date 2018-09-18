@@ -1,0 +1,4 @@
+key <AE01> {
+    type= "FOUR_LEVEL",
+    symbols[Group1]= [               1,          exclam,     onesuperior,      exclamdown ]
+};

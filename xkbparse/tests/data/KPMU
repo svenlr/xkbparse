@@ -1,0 +1,4 @@
+key <KPMU> {
+    type= "CTRL+ALT",
+    symbols[Group1]= [     KP_Multiply,     KP_Multiply,     KP_Multiply,     KP_Multiply,   XF86ClearGrab ]
+};

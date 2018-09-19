@@ -18,4 +18,8 @@ xkb_symbols "pc_de_inet(evdev)" {
         symbols[Group1]= [               3,         section,   threesuperior,        sterling ]
     };
 
+    modifier_map Mod5 { <MDSW> };
+    modifier_map Mod1 { <META> };
+    modifier_map Mod4 { <SUPR> };
+    modifier_map Mod4 { <HYPR> };
 };

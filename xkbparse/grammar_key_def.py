@@ -3,6 +3,21 @@ import re
 import pypeg2 as peg
 
 
+class IntNumMixin:
+    """
+    Workaround to make "__num" as created by peg.attr("__num", ...) as str available as "num" attribute with int type.
+    To be derived from in classes with a "__num" peg.attr().
+    """
+
+    @property
+    def num(self):
+        return int(getattr(self, "__num"))
+
+    @num.setter
+    def num(self, value):
+        setattr(self, "__num", value)
+
+
 class LevelType:
     """ A level type, such as "FOUR_LEVEL" or "EIGHT_LEVEL". Matches quotes as well. """
     grammar = "\"", peg.attr("name", re.compile(r"([A-Z]|_|\+)*")), "\""
@@ -36,37 +51,21 @@ class KeySymLevels(peg.List):
         return levels
 
 
-class KeyDefSymbolsGroup:
+class KeyDefSymbolsGroup(IntNumMixin):
     """ inside a key definition inside key_symbols { ... }, this is the part symbols[Group1]=[...]"""
     grammar = "symbols", "[", ["Group", "group"], peg.attr("__num", re.compile(r"[0-9]+")), "]", \
               "=", peg.attr("levels", KeySymLevels)
 
-    @property
-    def num(self):
-        return int(getattr(self, "__num"))
 
-    @num.setter
-    def num(self, value):
-        setattr(self, "__num", value)
-
-
-class KeyDefOverlay:
+class KeyDefOverlay(IntNumMixin):
     """ inside a key definition inside key_symbols { ... }, this is the part overlayX=<...>"""
     grammar = "overlay", peg.attr("__num", re.compile(r"[0-9]")), "=", peg.attr("key_code", KeyCode)
-
-    @property
-    def num(self):
-        return int(getattr(self, "__num"))
-
-    @num.setter
-    def num(self, value):
-        setattr(self, "__num", value)
 
 
 class KeyDefShort:
     """ short key definition inside key_symbols { ... }, such as key <A> { [a, A] }"""
     grammar = "key", peg.blank, peg.attr("key_code", KeyCode), peg.blank, "{", \
-              peg.indent(peg.attr("short_levels", KeySymLevels)), peg.endl, "};"
+              peg.indent(peg.attr("short_levels", KeySymLevels)), peg.endl, "}", ";"
 
     def convert(self, group_nums: list, type: LevelType):
         key_def = KeyDef()
@@ -84,7 +83,7 @@ class KeyDef(peg.List):
                   [KeyDefSymbolsGroup, KeyDefOverlay],
                   peg.maybe_some(",", peg.endl, [KeyDefSymbolsGroup, KeyDefOverlay]),
                   peg.optional(","), peg.endl
-              ), "};"
+              ), "}", ";", peg.endl
 
     def get_overlays(self):
         overlays = []

@@ -1,0 +1,21 @@
+xkb_symbols "pc_de_inet(evdev)" {
+
+    name[group1]="German";
+
+    key  <ESC> {         [          Escape ] };
+    key <AE01> {
+        type= "FOUR_LEVEL",
+        symbols[Group1]= [               1,          exclam,     onesuperior,      exclamdown ]
+    };
+    key <AE02> {
+        type= "FOUR_LEVEL",
+        overlay1= <I248>,
+        symbols[Group1]= [               2,        quotedbl,     twosuperior,       oneeighth ]
+    };
+    key <AE03> {
+        type= "FOUR_LEVEL",
+        overlay1= <I247>,
+        symbols[Group1]= [               3,         section,   threesuperior,        sterling ]
+    };
+
+};

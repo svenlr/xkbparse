@@ -25,6 +25,9 @@
           <option value="xkbparse.grammar_key_def.KeyDescription.short_levels" />
           <option value="xkbparse.grammar_key_def.KeyDescription.key_code" />
           <option value="xkbparse.grammar_key_desc.KeyDescription.*" />
+          <option value="xkbparse.grammar_actions.BoolArg.*" />
+          <option value="xkbparse.grammar_action_arguments.BoolArg.*" />
+          <option value="xkbparse.KeyCode" />
         </list>
       </option>
     </inspection_tool>

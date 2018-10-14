@@ -6,13 +6,6 @@ import xkbparse
 from .data_dir_path import TEST_DATA_DIR
 
 
-def test_bool_arg():
-    parsed = peg.parse("clearLocks", xkbparse.bool_arg("clearLocks"))
-    options = xkbparse.bool_arg("abc") + xkbparse.bool_arg("def")
-    print(options)
-    parsed2 = peg.parse("abc,def", (options, ",", options))
-
-
 def test_ModifiersArgument():
     parsed1 = peg.parse("modifiers=LevelFive", xkbparse.ModifiersArgument)
     assert parsed1[0] == "LevelFive"
@@ -23,5 +16,7 @@ def test_ModifiersArgument():
 
 def test_LatchModsAction():
     parsed = peg.parse("LatchMods(modifiers=LevelFive,clearLocks,latchToLock)", xkbparse.LatchModsAction)
-    assert parsed.clearLocks
-    assert parsed.latchToLock
+    assert parsed.get_bool("clearLocks")
+    assert parsed.get_bool("latchToLock")
+    # parsed.set_bool("clearLocks", False)
+    print(peg.compose(parsed, xkbparse.LatchModsAction))
